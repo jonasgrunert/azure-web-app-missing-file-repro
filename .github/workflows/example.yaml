@@ -3,7 +3,7 @@ name: Deploy Node.js project to Azure Static Web App
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - "v*"
 
