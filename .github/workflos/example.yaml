@@ -1,0 +1,38 @@
+name: Deploy Node.js project to Azure Static Web App
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "." # set this to the path to your function app project, defaults to the repository root
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy Azure Web App to Dev
+        uses: Azure/static-web-apps-deploy@v1
+        id: deploy
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload"
+          app_location: "./public" # App source code path relative to repository root
+          skip_app_build: true
+          deployment_environment: dev
+
+      - name: Deploy Azure Web App to Prod
+        uses: Azure/static-web-apps-deploy@v1
+        id: deployprod
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload"
+          app_location: "./public" # App source code path relative to repository root
+          skip_app_build: true
+        if: ${{ startsWith(github.ref_name, 'v') }}
