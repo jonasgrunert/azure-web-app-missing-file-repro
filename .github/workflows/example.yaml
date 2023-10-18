@@ -6,8 +6,6 @@ on:
       - master
     tags:
       - "v*"
-env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "." # set this to the path to your function app project, defaults to the repository root
 
 jobs:
   build-and-deploy:
@@ -23,7 +21,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "upload"
-          app_location: "./public" # App source code path relative to repository root
+          app_location: "." # App source code path relative to repository root
           skip_app_build: true
           deployment_environment: dev
 
@@ -33,6 +31,6 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "upload"
-          app_location: "./public" # App source code path relative to repository root
+          app_location: "." # App source code path relative to repository root
           skip_app_build: true
         if: ${{ startsWith(github.ref_name, 'v') }}
